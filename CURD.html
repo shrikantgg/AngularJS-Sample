@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head>
+	<title>AngularJS CURD Demo</title>
+	<link rel="stylesheet" type="text/css" href="w3.css">
+	<script src="angular.min.js"></script>
+</head>
+<body ng-controller="Myctr">
+
+
+
+<div class="w3-container w3-teal">
+  <h1>CURD Operaion</h1>
+</div>
+
+
+
+<div class="w3-container">
+ 
+ <div class="w3-row-padding">
+
+  <div class="w3-third">
+  <label>Item Name</label>
+  <input class="w3-input w3-border" type="text" ng-model="name">
+ </div>
+
+  <div class="w3-third">
+  <label>Item Price</label>
+  <input class="w3-input w3-border" type="number" ng-model="price">
+ </div>
+
+  <div class="w3-third"> 	
+  	<br>
+  	<button class="w3-btn w3-blue" ng-click="addrow()" ng-show="v">Add</button> 
+  	<button class="w3-btn w3-green" ng-click="updaterow(listpoint)" ng-hide="v">Update</button>  
+  </div>
+
+  
+
+
+ </div>
+
+<p class="w3-padding">
+ 
+  <input class="w3-input w3-border" type="text" placeholder="Search Item" ng-model="search">
+ </p>
+
+</div>
+
+
+
+
+<table class="w3-table w3-bordered w3-striped">
+	<tr class="w3-red">
+		<th>Item Name</th>
+		<th>Item Price</th>
+		<th>Action  
+			 <select  ng-model="selectedItem" ng-change="limitolist()">
+
+  				<option value="1">1</option>
+  				<option value="2">2</option>
+  				<option value="5">5</option>
+  				<option value="0">All List</option>
+				</select> 
+		</th>
+	</tr>
+	<tr ng-repeat="x in list |  limitTo :limit | filter:search">
+		<td> {{ x.name }}</td>
+		<td>{{ x.price }}</td>
+
+		<td>
+			<button class="w3-btn w3-yellow" ng-click="selectrow(x.name,x.price,list.indexOf(x))">Edit</button>
+			<button class="w3-btn w3-red" ng-click="deleterow(x)">Delete</button>
+		</td>
+	</tr>
+</table>
+
+
+</body>
+
+
+
+<script>
+	var app = angular.module('MyApp',[]);
+	app.controller('Myctr',function($scope){
+
+
+
+		//list data store
+		$scope.list = [
+		{"name":"Dhom","price":250},
+		{"name":"Car","price":150},
+		{"name":"Home","price":200}	
+		];
+
+		$scope.limit=$scope.list.length;
+		
+	
+
+		//add item in list
+		$scope.addrow = function()
+		{
+			if($scope.name && $scope.price)
+			{
+			temp = {"name":$scope.name,"price":$scope.price};
+			$scope.list.push(temp);
+			$scope.name = "";
+			$scope.price = "";
+			$scope.limit=$scope.list.length;
+			}
+			else
+			{
+				alert("please Enter Item Name and Item Price");
+				return false;
+			}
+		};
+
+		// remove item in list
+		$scope.deleterow = function(x)
+		{
+			 var index=$scope.list.indexOf(x)
+     		 $scope.list.splice(index,1); 
+			
+		};
+
+		//select item in list
+		$scope.selectrow = function(name,price,postionrow)
+		{
+			$scope.name = name;
+			$scope.price = price;
+			$scope.listpoint = postionrow;
+			$scope.v = false;
+		};
+
+		//update item in list
+		$scope.updaterow = function(postionrow)
+		{
+			if($scope.name && $scope.price)
+			{
+			//temp = '{"name":$scope.name,"price":$scope.price}';
+			$scope.list[postionrow].name = $scope.name;
+			$scope.list[postionrow].price = $scope.price;
+			$scope.name = "";
+			$scope.price = "";
+			$scope.listpoint = null;
+			$scope.limit=$scope.list.length;
+			$scope.v = true;
+			}
+			else
+			{
+				alert("please Enter Item Name and Item Price");
+				return false;
+			}
+			 
+		};
+
+		//change limite in select opetion
+		$scope.limitolist = function()
+		{
+			if($scope.selectedItem==0)
+	 	  	{
+	 	  		$scope.limit=$scope.list.length;
+	 	  	}else
+	 	  	{
+	 	  		$scope.limit=$scope.selectedItem;
+	 	  	}
+		};
+
+		$scope.selectedItem =0;
+		$scope.v = true;
+	});
+</script>
+
+</html>
