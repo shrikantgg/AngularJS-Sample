@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head>
+	<title>AngularJS Route Demo</title>
+	<script src="angular.min.js"></script>
+	<script src="angular-route.min.js"></script>
+
+</head>
+<body>
+<h1>Demo Of AngularJS Route</h1>
+<ul>
+	<li><a href="#!page1">Page1</a></li>
+	<li><a href="#!page2">Page2</a></li>
+	<li><a href="#!page3">Page3</a></li>
+</ul>
+
+<div ng-view></div>
+	
+
+
+</body>
+
+<script>
+	var app = angular.module("MyApp",["ngRoute"]);
+
+	app.config(['$routeProvider',function($routeProvider)
+	{
+		$routeProvider
+		.when("/page1", {
+    		templateUrl : "pages/page1.html",
+    		controller :  "Myctr"
+  		})
+		.when("/page2",{
+			templateUrl: "pages/page2.html"
+		})
+		.when("/page3",{
+			templateUrl: "pages/page3.html"
+		})
+		.otherwise({
+			templateUrl : "pages/page1.html"
+		});
+
+
+	}]);
+
+	app.controller("Myctr",function($scope)
+	{
+		$scope.x =257;	
+	});
+</script>
+</html>
