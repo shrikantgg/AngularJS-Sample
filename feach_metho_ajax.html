@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head>
+	<title>AngularJS Feach Data un File</title>
+	<script src="angular.min.js"></script>
+	<script src="angular-route.min.js"></script>
+</head>
+<body ng-controller="Myctr">
+	<h1>Feach data in sample.txt file</h1>
+{{ filedata }}
+</body>
+
+<script>
+	var app = angular.module("MyApp",[]);
+	app.controller("Myctr",function($scope,$http){
+
+		$http.get('sample.txt').then(function(res){
+			$scope.filedata = res.data;	
+		});
+		
+	});
+</script>
+</html>
